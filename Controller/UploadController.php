@@ -25,8 +25,6 @@ class UploadController extends Controller
     ){
         $config = json_decode($request->request->get('config'),true);
 
-        $thumbsDir = $this->container->getParameter('comur_image.thumbs_dir');
-        $thumbSize = $this->container->getParameter('comur_image.media_lib_thumb_size');
         $uploadUrl = $config['uploadConfig']['uploadUrl'];
         $uploadUrl = substr($uploadUrl, -strlen('/')) === '/' ? $uploadUrl : $uploadUrl . '/';
         
@@ -35,17 +33,10 @@ class UploadController extends Controller
         
         $webDir = $config['uploadConfig']['webDir'];
         $webDir = substr($webDir, -strlen('/')) === '/' ? $webDir : $webDir . '/';
-        if($config['uploadConfig']['generateFilename']){
-          $filename = sha1(uniqid(mt_rand(), true));  
-        } 
-        else 
-        {
-            $filename = $request->files->get('image_upload_file')->getClientOriginalName();
-            if(file_exists($uploadUrl.$thumbsDir.'/'.$filename))
-            {
-                $filename = time().'-'.$filename;
-            }   
-        }
+        $filename = sha1(uniqid(mt_rand(), true));
+        
+        $thumbsDir = $this->container->getParameter('comur_image.thumbs_dir');
+        $thumbSize = $this->container->getParameter('comur_image.media_lib_thumb_size');
 
         $galleryDir = $this->container->getParameter('comur_image.gallery_dir');
         $gThumbSize = $this->container->getParameter('comur_image.gallery_thumb_size');
@@ -58,7 +49,6 @@ class UploadController extends Controller
             'upload_dir' => $uploadUrl,
             'param_name' => 'image_upload_file',
             'file_name' => $filename,
-            'generated_file_name' => $config['uploadConfig']['generateFilename'],
             'upload_url' => $config['uploadConfig']['webDir'],
             'min_width' => $config['cropConfig']['minWidth'],
             'min_height' => $config['cropConfig']['minHeight'],
@@ -157,10 +147,7 @@ class UploadController extends Controller
             mkdir($uploadUrl.'/'.$this->container->getParameter('comur_image.cropped_image_dir').'/', 0755, true);
         }
         $ext = pathinfo($imageName, PATHINFO_EXTENSION);
-        //set uniq filename if defined inside the configuration
-        if($config['uploadConfig']['generateFilename']){
-            $imageName = sha1(uniqid(mt_rand(), true)).'.'.$ext;
-        }
+        $imageName = sha1(uniqid(mt_rand(), true)).'.'.$ext;
         $destSrc = $uploadUrl.'/'.$this->container->getParameter('comur_image.cropped_image_dir').'/'.$imageName;
         //$writeFunc($dstR,$src,$imageQuality);
 
@@ -279,7 +266,7 @@ class UploadController extends Controller
         }
         else{
             $h = $srcH;
-            $w = $srcW * ($maxH / $maxW);
+            $w = $srcW * ($maxtH / $maxW);
             $x = round($srcW - $w / 2, 0);
         }
         return array($w, $h, $x, $y);
