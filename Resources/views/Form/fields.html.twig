@@ -39,7 +39,6 @@
 
     <script>
         $(document).ready(function(){
-            Holder.run();
             {% if options.uploadConfig.saveOriginal %}
                 if($('#{{ form[options.uploadConfig.saveOriginal].vars.id }}').val()){
                     $('#{{ form[name].vars.id }}_preview').click(function(e){

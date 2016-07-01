@@ -10,6 +10,10 @@ $(function(){
             return false;
         } 
     });
+    
+    if(typeof Holder !== 'undefined') {
+        Holder.run();
+    }
 
 });
 
