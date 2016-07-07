@@ -57,7 +57,7 @@
                 {% endif %}
                 initializeImageManager('{{ form[name].vars.id }}', options);
                 // console.log('{{form[name].vars.id}} onclick');
-                $('#image_upload_modal').modal('show');
+                $('#comur_image_upload_modal').modal('show');
             });
         });
         $('.select-image-button').mouseover(function(){
@@ -108,7 +108,7 @@
             galleries['{{form[name].vars.id}}'] = true;
             $('#image_add_button_{{form[name].vars.id}}').click(function(event){
                 initializeImageManager('{{ form[name].vars.id }}', $.parseJSON('{{ options | json_encode() | raw }}'));
-                $('#image_upload_modal').modal('show');
+                $('#comur_image_upload_modal').modal('show');
             });
             $( "#gallery_preview_{{form[name].vars.id}}" ).sortable({
                 placeholder: "gallery-image-container placeholder",
