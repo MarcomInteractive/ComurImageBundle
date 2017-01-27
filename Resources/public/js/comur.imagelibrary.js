@@ -128,8 +128,7 @@ function initJCrop(id, options){
         var now = new Date().getTime();
         $('#image_preview img').remove();
         $('#image_preview').html('<img src="/'+options.uploadConfig.webDir + '/'+$('#selected_image').val()+'?'+now+'" id="image_preview_image"/>');
-        $('#image_preview img').load(function(){
-
+        $('#image_preview img').on('load', function(){
             
             $('#image_preview img').Jcrop({
                 // start off with jcrop-light class
